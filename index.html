@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#f7eff2"/>
+<meta name="description" content="Florette — Seu diário de bem-estar feminino. IMC, medidas corporais e evolução com elegância."/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Florette"/>
+<title>Florette — Wellness & Body Journal</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="icon-192.png"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<!-- AdSense: substitua ca-pub-XXXXXXXXXXXXXXXX pelo seu ID -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+<style>
+:root{
+  --dusty-rose:#d4878e;--rose-light:#e8b4b8;--blush:#f7eff2;--cream:#fdf9f6;
+  --gold:#c9a96e;--gold-pale:#f5ecd8;--taupe:#9e8486;--charcoal:#3a2c2e;
+  --sage:#8fad8f;--sky:#8fbccc;--white:#ffffff;
+  --font-d:'Playfair Display',Georgia,serif;
+  --font-b:'DM Sans',sans-serif;
+  --r16:16px;--r24:24px;--r50:50px;
+  --sh:0 8px 40px rgba(180,120,130,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-b);background:var(--cream);color:var(--charcoal);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 70% 50% at 5% 0%,rgba(212,135,142,.18) 0%,transparent 55%),
+  radial-gradient(ellipse 50% 40% at 95% 90%,rgba(201,169,110,.14) 0%,transparent 55%);
+  pointer-events:none;z-index:0;}
+
+/* ── LANG BAR ── */
+#lang-bar{position:fixed;top:0;right:0;z-index:200;display:flex;gap:4px;padding:10px 14px;}
+.lang-btn{font-family:var(--font-b);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 11px;border-radius:20px;border:1.5px solid rgba(212,135,142,.4);
+  background:rgba(255,255,255,.7);backdrop-filter:blur(8px);color:var(--taupe);cursor:pointer;transition:.2s;}
+.lang-btn.active,.lang-btn:hover{background:var(--dusty-rose);border-color:var(--dusty-rose);color:#fff;}
+
+/* ── HEADER ── */
+header{position:relative;z-index:10;text-align:center;padding:60px 24px 28px;}
+.header-flourish{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px;}
+.header-flourish span{height:1px;width:40px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.header-flourish i{font-style:normal;font-size:.7rem;color:var(--gold);letter-spacing:.2em;}
+.brand{font-family:var(--font-d);font-size:clamp(3rem,10vw,5rem);font-weight:400;letter-spacing:.1em;line-height:1;
+  background:linear-gradient(135deg,var(--charcoal) 30%,var(--dusty-rose) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:fadeDown .9s ease both;}
+.tagline{margin-top:8px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);
+  font-weight:400;animation:fadeDown 1.1s .15s ease both;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── NAV ── */
+nav{position:relative;z-index:10;display:flex;justify-content:center;gap:8px;padding:0 16px 28px;flex-wrap:wrap;}
+.tab-btn{font-family:var(--font-b);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  padding:10px 18px;border-radius:var(--r50);border:1.5px solid var(--rose-light);
+  background:transparent;color:var(--taupe);cursor:pointer;transition:.25s;font-weight:500;}
+.tab-btn.active,.tab-btn:hover{background:var(--dusty-rose);border-color:var(--dusty-rose);
+  color:#fff;box-shadow:0 4px 16px rgba(212,135,142,.35);}
+
+/* ── MAIN ── */
+main{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:0 18px 80px;}
+.section{display:none;animation:fadeIn .45s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CARD ── */
+.card{background:rgba(255,255,255,.84);backdrop-filter:blur(16px);border-radius:var(--r24);
+  padding:32px 28px;box-shadow:var(--sh);border:1px solid rgba(232,180,184,.28);margin-bottom:18px;}
+.card-title{font-family:var(--font-d);font-size:1.65rem;font-weight:400;color:var(--charcoal);margin-bottom:4px;line-height:1.25;}
+.card-title em{font-style:italic;color:var(--dusty-rose);}
+.card-sub{font-size:.76rem;color:var(--taupe);letter-spacing:.06em;margin-bottom:26px;}
+
+/* ── PHASE SELECTOR ── */
+.phase-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.phase-btn{font-family:var(--font-b);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:8px 14px;border-radius:var(--r50);border:1.5px solid rgba(212,135,142,.4);
+  background:transparent;color:var(--taupe);cursor:pointer;transition:.2s;font-weight:500;}
+.phase-btn.active{background:var(--blush);border-color:var(--dusty-rose);color:var(--dusty-rose);}
+.phase-label{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);
+  margin-bottom:8px;font-weight:500;display:block;}
+
+/* ── INPUTS ── */
+.input-group{margin-bottom:18px;}
+label.field-label{display:block;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--taupe);margin-bottom:7px;font-weight:500;}
+.input-row{display:flex;align-items:center;background:var(--blush);border-radius:var(--r50);
+  border:1.5px solid rgba(212,135,142,.35);overflow:hidden;transition:.2s;}
+.input-row:focus-within{border-color:var(--dusty-rose);box-shadow:0 0 0 3px rgba(212,135,142,.15);}
+.input-row input{flex:1;border:none;background:transparent;padding:13px 18px;
+  font-family:var(--font-d);font-size:1.3rem;font-weight:400;color:var(--charcoal);outline:none;min-width:0;}
+.input-row input::placeholder{color:rgba(212,135,142,.5);}
+.unit-badge{padding:0 16px;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dusty-rose);font-weight:500;white-space:nowrap;}
+.seg-wrap{display:flex;gap:8px;}
+.seg-wrap .input-row{flex:1;}
+
+/* ── BUTTONS ── */
+.btn-primary{width:100%;padding:15px;border-radius:var(--r50);border:none;
+  background:linear-gradient(135deg,var(--dusty-rose) 0%,#b56068 100%);
+  color:#fff;font-family:var(--font-b);font-size:.76rem;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:500;cursor:pointer;
+  box-shadow:0 6px 24px rgba(212,135,142,.38);transition:.2s;margin-top:6px;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(212,135,142,.42);}
+.btn-primary:active{transform:translateY(0);}
+.btn-gold{width:100%;padding:15px;border-radius:var(--r50);border:none;
+  background:linear-gradient(135deg,var(--gold) 0%,#a8834a 100%);
+  color:#fff;font-family:var(--font-b);font-size:.76rem;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:500;cursor:pointer;
+  box-shadow:0 6px 24px rgba(201,169,110,.38);transition:.2s;}
+.btn-gold:hover{transform:translateY(-2px);}
+
+/* ── RESULT ── */
+#result-card{display:none;}
+#result-card.visible{display:block;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.result-hero{text-align:center;padding:8px 0 24px;}
+.imc-number{font-family:var(--font-d);font-size:clamp(3.8rem,14vw,6rem);font-weight:400;line-height:1;transition:color .5s;}
+.imc-cat{font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;margin-top:6px;font-weight:500;}
+
+/* ── GAUGE ── */
+.gauge-wrap{margin:16px 0 24px;}
+.gauge-track{height:7px;border-radius:8px;background:linear-gradient(90deg,
+  #7ec8d3 0% 15%,#a8d8a0 15% 38%,#f0d080 38% 58%,#e8a070 58% 75%,#d06060 75% 100%);position:relative;}
+.gauge-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:17px;height:17px;border-radius:50%;background:#fff;
+  border:3px solid var(--charcoal);box-shadow:0 2px 8px rgba(0,0,0,.18);
+  transition:left .9s cubic-bezier(.34,1.56,.64,1);}
+.gauge-labels{display:flex;justify-content:space-between;margin-top:7px;}
+.gauge-labels span{font-size:.58rem;color:var(--taupe);letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── INSIGHTS GRID ── */
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;}
+.insight-pill{background:var(--blush);border-radius:14px;padding:14px 12px;border:1px solid rgba(212,135,142,.3);}
+.insight-pill .lbl{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);margin-bottom:5px;}
+.insight-pill .val{font-family:var(--font-d);font-size:1.2rem;font-weight:400;color:var(--charcoal);}
+
+/* ── TIPS ── */
+.tips-wrap{margin-top:20px;}
+.tips-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--taupe);margin-bottom:10px;}
+.tips-list{list-style:none;}
+.tips-list li{display:flex;gap:10px;padding:11px 0;
+  border-bottom:1px solid rgba(212,135,142,.15);font-size:.82rem;line-height:1.6;color:var(--charcoal);}
+.tips-list li:last-child{border-bottom:none;}
+.tip-icon{flex-shrink:0;font-size:1rem;margin-top:1px;}
+
+/* ── MEASURES GRID ── */
+.measure-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.measure-item{background:var(--blush);border-radius:16px;padding:14px 14px 12px;
+  border:1px solid rgba(212,135,142,.3);position:relative;}
+.measure-item .mi-label{display:flex;align-items:center;gap:6px;
+  font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);
+  margin-bottom:8px;font-weight:500;}
+.measure-item .input-row{border-radius:12px;}
+.measure-item .input-row input{padding:10px 12px;font-size:1.15rem;}
+.measure-item .unit-badge{padding:0 12px;font-size:.6rem;}
+
+/* ── HELP TOOLTIP ── */
+.help-btn{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--dusty-rose);
+  background:transparent;color:var(--dusty-rose);font-size:.6rem;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;line-height:1;font-family:var(--font-b);transition:.2s;}
+.help-btn:hover{background:var(--dusty-rose);color:#fff;}
+.tooltip-wrap{position:relative;display:inline-block;}
+.tooltip-box{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;
+  transform:translateX(-50%);background:var(--charcoal);color:#fff;
+  font-size:.72rem;line-height:1.55;padding:10px 14px;border-radius:12px;
+  white-space:nowrap;max-width:220px;white-space:normal;width:220px;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:100;}
+.tooltip-box::after{content:'';position:absolute;top:100%;left:50%;
+  transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--charcoal);}
+.tooltip-wrap.open .tooltip-box{display:block;animation:fadeIn .2s ease;}
+
+/* ── BODY DIAGRAM ── */
+.body-diagram-wrap{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;}
+.body-svg-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:4px;}
+.body-diagram-wrap svg{width:88px;height:auto;}
+.measure-fields-col{flex:1;}
+
+/* ── AD SLOT ── */
+.ad-slot{background:linear-gradient(135deg,var(--gold-pale,#f5ecd8) 0%,rgba(245,236,216,.35) 100%);
+  border-radius:var(--r24);border:1px dashed rgba(201,169,110,.5);
+  padding:22px;text-align:center;margin-bottom:18px;}
+.ad-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.ad-placeholder{font-family:var(--font-d);font-size:.9rem;color:var(--taupe);font-style:italic;}
+
+/* ── HISTORY ── */
+.history-item{background:rgba(255,255,255,.84);backdrop-filter:blur(12px);
+  border-radius:18px;padding:18px 20px;margin-bottom:10px;
+  border:1px solid rgba(232,180,184,.25);box-shadow:0 4px 16px rgba(180,120,130,.08);
+  display:flex;align-items:center;gap:14px;transition:.2s;}
+.history-item:hover{box-shadow:0 6px 24px rgba(180,120,130,.14);}
+.hi-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.hi-info{flex:1;}
+.hi-date{font-size:.64rem;letter-spacing:.1em;color:var(--taupe);text-transform:uppercase;}
+.hi-val{font-family:var(--font-d);font-size:1.5rem;font-weight:400;color:var(--charcoal);line-height:1.1;}
+.hi-cat{font-size:.7rem;font-weight:500;letter-spacing:.08em;}
+.hi-meta{font-size:.68rem;color:var(--taupe);margin-top:2px;}
+.hi-delete{background:none;border:none;font-size:1rem;cursor:pointer;
+  color:var(--taupe);opacity:.5;transition:.2s;padding:4px;}
+.hi-delete:hover{opacity:1;color:var(--dusty-rose);}
+
+/* ── LOCKED ── */
+.locked-overlay{position:relative;border-radius:18px;overflow:hidden;}
+.locked-blur{filter:blur(4px);pointer-events:none;opacity:.5;}
+.locked-badge{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  background:rgba(247,239,242,.75);backdrop-filter:blur(2px);}
+.locked-badge .lock-icon{font-size:1.6rem;}
+.locked-badge p{font-size:.72rem;letter-spacing:.1em;color:var(--charcoal);
+  text-align:center;max-width:200px;line-height:1.5;}
+
+/* ── PREMIUM MODAL ── */
+#premium-modal{display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(58,44,46,.45);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;}
+#premium-modal.open{display:flex;animation:fadeIn .3s ease;}
+.modal-box{background:var(--white);border-radius:28px;padding:40px 32px;
+  max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);text-align:center;}
+.modal-title{font-family:var(--font-d);font-size:2rem;color:var(--charcoal);margin-bottom:6px;}
+.modal-title em{color:var(--gold);}
+.modal-sub{font-size:.78rem;color:var(--taupe);margin-bottom:28px;line-height:1.6;}
+.feature-list{list-style:none;margin:0 0 28px;text-align:left;}
+.feature-list li{display:flex;align-items:center;gap:10px;padding:9px 0;
+  font-size:.84rem;color:var(--charcoal);border-bottom:1px solid rgba(212,135,142,.12);}
+.feature-list li:last-child{border-bottom:none;}
+.price-badge{background:var(--gold-pale,#f5ecd8);border-radius:var(--r50);
+  padding:10px 24px;display:inline-block;margin-bottom:20px;}
+.price-badge span{font-family:var(--font-d);font-size:1.6rem;color:var(--gold);}
+.price-badge small{font-size:.7rem;color:var(--taupe);letter-spacing:.1em;text-transform:uppercase;}
+.modal-close{margin-top:14px;background:none;border:none;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--taupe);cursor:pointer;}
+.modal-close:hover{color:var(--charcoal);}
+
+/* ── CHART ── */
+.chart-wrap{background:rgba(255,255,255,.84);border-radius:var(--r24);
+  padding:24px;box-shadow:var(--sh);border:1px solid rgba(232,180,184,.25);margin-bottom:18px;}
+.chart-title{font-family:var(--font-d);font-size:1.2rem;margin-bottom:4px;}
+.chart-sub{font-size:.7rem;color:var(--taupe);margin-bottom:18px;}
+.chart-canvas-wrap{position:relative;width:100%;height:160px;}
+
+/* ── ACHIEVEMENTS ── */
+.achiev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+.achiev-card{background:rgba(255,255,255,.84);border-radius:18px;padding:16px 10px;
+  text-align:center;border:1px solid rgba(232,180,184,.25);
+  box-shadow:0 4px 14px rgba(180,120,130,.07);transition:.2s;}
+.achiev-card.locked-a{opacity:.38;filter:grayscale(1);}
+.achiev-icon{font-size:2rem;margin-bottom:6px;}
+
+/* ── ARTICLE ── */
+.article-card{background:rgba(255,255,255,.84);backdrop-filter:blur(14px);
+  border-radius:var(--r24);padding:26px;box-shadow:0 4px 20px rgba(180,120,130,.09);
+  border:1px solid rgba(232,180,184,.28);margin-bottom:14px;}
+.art-tag{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dusty-rose);font-weight:500;margin-bottom:8px;}
+.art-title{font-family:var(--font-d);font-size:1.3rem;font-weight:400;
+  color:var(--charcoal);line-height:1.3;margin-bottom:10px;}
+.art-body{font-size:.82rem;line-height:1.7;color:#5a4548;}
+.art-body p{margin-bottom:9px;}
+.art-body strong{color:var(--dusty-rose);font-weight:500;}
+.imc-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:4px;}
+.imc-table th{text-align:left;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--taupe);padding:8px 10px;border-bottom:1.5px solid rgba(212,135,142,.25);font-weight:500;}
+.imc-table td{padding:10px 10px;border-bottom:1px solid rgba(212,135,142,.12);color:var(--charcoal);}
+.imc-table tr:last-child td{border-bottom:none;}
+.dot-sm{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--taupe);}
+.empty-state .es-icon{font-size:2.5rem;margin-bottom:12px;}
+.empty-state p{font-size:.82rem;line-height:1.6;white-space:pre-line;}
+
+/* ── INSTALL BANNER ── */
+#install-banner{display:none;position:fixed;bottom:18px;left:50%;
+  transform:translateX(-50%);z-index:300;background:var(--white);
+  border-radius:var(--r24);box-shadow:0 8px 40px rgba(0,0,0,.16);
+  padding:18px 22px;width:calc(100% - 36px);max-width:420px;
+  border:1px solid rgba(212,135,142,.35);gap:14px;align-items:center;
+  animation:slideUp .5s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.ib-text{flex:1;font-size:.8rem;line-height:1.5;color:var(--charcoal);}
+.ib-text strong{display:block;font-family:var(--font-d);font-size:1rem;color:var(--dusty-rose);}
+.btn-install{padding:10px 18px;border-radius:var(--r50);border:none;
+  background:var(--dusty-rose);color:#fff;font-size:.68rem;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;font-family:var(--font-b);}
+.btn-dismiss-ib{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--taupe);}
+
+/* ── TOAST ── */
+#reminder-toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-120px);
+  z-index:400;background:var(--white);border-radius:16px;
+  padding:14px 22px;box-shadow:0 8px 30px rgba(0,0,0,.14);
+  border-left:4px solid var(--dusty-rose);
+  font-size:.82rem;color:var(--charcoal);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);max-width:340px;text-align:center;}
+#reminder-toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:480px){
+  .card{padding:26px 20px;}
+  .insight-grid,.measure-grid{grid-template-columns:1fr;}
+  .body-diagram-wrap{flex-direction:column;align-items:center;}
+  .body-diagram-wrap svg{width:70px;}
+  .achiev-grid{grid-template-columns:repeat(3,1fr);}
+  .modal-box{padding:32px 22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LANG BAR -->
+<div id="lang-bar">
+  <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('es')">ES</button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-flourish">
+    <span></span><i>✦ wellness journal ✦</i><span></span>
+  </div>
+  <h1 class="brand">Florette</h1>
+  <p class="tagline" data-i18n="tagline">Saúde · Medidas · Evolução Feminina</p>
+</header>
+
+<!-- NAV -->
+<nav>
+  <button class="tab-btn active" onclick="showTab('calc',this)" data-i18n="nav_calc">✦ IMC</button>
+  <button class="tab-btn" onclick="showTab('medidas',this)" data-i18n="nav_measures">Medidas</button>
+  <button class="tab-btn" onclick="showTab('historico',this)" data-i18n="nav_history">Histórico</button>
+  <button class="tab-btn" onclick="showTab('progresso',this)" data-i18n="nav_progress">Progresso</button>
+  <button class="tab-btn" onclick="showTab('dicas',this)" data-i18n="nav_tips">Dicas</button>
+</nav>
+
+<main>
+
+<!-- AD TOP -->
+<div class="ad-slot">
+  <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+  <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+</div>
+
+<!-- ══════════ IMC ══════════ -->
+<div id="sec-calc" class="section active">
+  <div class="card">
+    <h2 class="card-title" data-i18n="calc_title">Calcule seu <em>IMC</em></h2>
+    <p class="card-sub" data-i18n="calc_sub">Preencha os campos — o resultado é salvo automaticamente</p>
+
+    <!-- FASE DE VIDA -->
+    <span class="phase-label" data-i18n="phase_label">Minha fase de vida</span>
+    <div class="phase-wrap" id="phase-wrap">
+      <button class="phase-btn active" data-phase="young" onclick="selectPhase(this)">🌱 <span data-i18n="ph_young">Jovem adulta</span></button>
+      <button class="phase-btn" data-phase="pregnant" onclick="selectPhase(this)">🤰 <span data-i18n="ph_pregnant">Gestante</span></button>
+      <button class="phase-btn" data-phase="post" onclick="selectPhase(this)">🌸 <span data-i18n="ph_post">Pós-menopausa</span></button>
+      <button class="phase-btn" data-phase="senior" onclick="selectPhase(this)">✨ <span data-i18n="ph_senior">60+</span></button>
+    </div>
+
+    <div class="input-group">
+      <label class="field-label" data-i18n="lbl_weight">Peso</label>
+      <div class="input-row">
+        <input type="number" id="peso" placeholder="62" min="30" max="250" step=".1" inputmode="decimal"/>
+        <span class="unit-badge">kg</span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="field-label" data-i18n="lbl_height">Altura</label>
+      <div class="seg-wrap">
+        <div class="input-row">
+          <input type="number" id="altM" placeholder="1" min="1" max="2" step="1" inputmode="numeric"/>
+          <span class="unit-badge">m</span>
+        </div>
+        <div class="input-row">
+          <input type="number" id="altCm" placeholder="65" min="0" max="99" step="1" inputmode="numeric"/>
+          <span class="unit-badge">cm</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="field-label" data-i18n="lbl_age">Idade <span style="opacity:.6;font-weight:300">(opcional)</span></label>
+      <div class="input-row">
+        <input type="number" id="idade" placeholder="28" min="12" max="99" step="1" inputmode="numeric"/>
+        <span class="unit-badge" data-i18n="unit_years">anos</span>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="calcular()" data-i18n="btn_calc">Calcular & Salvar IMC ✦</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card" id="result-card">
+    <div class="result-hero">
+      <div class="imc-number" id="imc-val">—</div>
+      <div class="imc-cat" id="imc-cat" style="color:var(--taupe)">—</div>
+    </div>
+    <div class="gauge-wrap">
+      <div class="gauge-track"><div class="gauge-thumb" id="gauge-thumb" style="left:0%"></div></div>
+      <div class="gauge-labels">
+        <span data-i18n="g_under">Abaixo</span>
+        <span data-i18n="g_ideal">Ideal</span>
+        <span data-i18n="g_over">Sobrepeso</span>
+        <span data-i18n="g_obese">Acima</span>
+      </div>
+    </div>
+    <div class="insight-grid" id="insight-grid"></div>
+    <div class="tips-wrap">
+      <p class="tips-label">✦ <span data-i18n="tips_for_you">dicas para você</span></p>
+      <ul class="tips-list" id="tips-list"></ul>
+    </div>
+  </div>
+
+  <div class="ad-slot" id="ad-after-calc" style="display:none">
+    <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+    <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+  </div>
+</div>
+
+<!-- ══════════ MEDIDAS ══════════ -->
+<div id="sec-medidas" class="section">
+  <div class="card">
+    <h2 class="card-title" data-i18n="measures_title">Suas <em>Medidas</em></h2>
+    <p class="card-sub" data-i18n="measures_sub">Registre fita métrica bem ajustada, sem apertar</p>
+
+    <!-- BODY DIAGRAM + FIELDS -->
+    <div class="body-diagram-wrap">
+
+      <!-- SVG silhouette -->
+      <div class="body-svg-col">
+        <svg viewBox="0 0 100 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- head -->
+          <ellipse cx="50" cy="20" rx="14" ry="17" fill="#e8b4b8" opacity=".7"/>
+          <!-- neck -->
+          <rect x="44" y="35" width="12" height="10" rx="4" fill="#d4878e" opacity=".5"/>
+          <!-- shoulders/torso -->
+          <path d="M20 50 Q10 55 12 90 L20 130 Q50 140 80 130 L88 90 Q90 55 80 50 Q65 44 50 44 Q35 44 20 50Z" fill="#e8b4b8" opacity=".6"/>
+          <!-- bust line -->
+          <path d="M18 73 Q34 82 50 80 Q66 82 82 73" stroke="#d4878e" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <!-- waist line -->
+          <path d="M22 100 Q36 107 50 105 Q64 107 78 100" stroke="#c9a96e" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <!-- hip/gluteo area -->
+          <path d="M14 128 Q10 148 14 165 Q30 175 50 174 Q70 175 86 165 Q90 148 86 128 Q68 138 50 138 Q32 138 14 128Z" fill="#e8b4b8" opacity=".55"/>
+          <!-- hip line -->
+          <path d="M14 145 Q30 158 50 157 Q70 158 86 145" stroke="#8fad8f" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <!-- gluteo line -->
+          <path d="M16 160 Q32 172 50 171 Q68 172 84 160" stroke="#b09ea0" stroke-width="1.5" stroke-dasharray="3 2" opacity=".6"/>
+          <!-- legs -->
+          <path d="M22 170 L18 250 Q26 255 34 250 L38 185 Q50 188 62 185 L66 250 Q74 255 82 250 L78 170 Q64 178 50 178 Q36 178 22 170Z" fill="#e8b4b8" opacity=".5"/>
+          <!-- thigh line -->
+          <path d="M22 193 Q30 200 38 198" stroke="#8fbccc" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <path d="M62 198 Q70 200 78 193" stroke="#8fbccc" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <!-- calf line -->
+          <path d="M20 228 Q27 234 34 231" stroke="#9b8fa0" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <path d="M66 231 Q73 234 80 228" stroke="#9b8fa0" stroke-width="1.5" stroke-dasharray="3 2" opacity=".7"/>
+          <!-- arms -->
+          <path d="M12 52 Q4 70 6 105 Q10 115 18 112 L22 78 Q20 65 20 52Z" fill="#e8b4b8" opacity=".5"/>
+          <path d="M88 52 Q96 70 94 105 Q90 115 82 112 L78 78 Q80 65 80 52Z" fill="#e8b4b8" opacity=".5"/>
+          <!-- arm line -->
+          <path d="M6 80 Q12 86 18 84" stroke="#d4878e" stroke-width="1.5" stroke-dasharray="3 2" opacity=".6"/>
+          <path d="M82 84 Q88 86 94 80" stroke="#d4878e" stroke-width="1.5" stroke-dasharray="3 2" opacity=".6"/>
+          <!-- labels -->
+          <text x="91" y="77" font-size="6" fill="#d4878e" opacity=".9" font-family="sans-serif">💗</text>
+          <text x="91" y="103" font-size="6" fill="#c9a96e" opacity=".9" font-family="sans-serif">💛</text>
+          <text x="91" y="148" font-size="6" fill="#8fad8f" opacity=".9" font-family="sans-serif">💚</text>
+          <text x="91" y="163" font-size="6" fill="#b09ea0" opacity=".9" font-family="sans-serif">🤍</text>
+        </svg>
+        <div style="font-size:.55rem;color:var(--taupe);text-align:center;margin-top:4px;line-height:1.4;letter-spacing:.06em;" data-i18n="diagram_note">lado<br>direito</div>
+      </div>
+
+      <!-- FIELDS -->
+      <div class="measure-fields-col">
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d4878e;flex-shrink:0"></span>
+            <span data-i18n="m_bust">Busto</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_bust">Passe a fita na linha dos mamilos, horizontalmente, com o sutiã mais leve ou sem ele. Inspire normalmente ao medir.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-busto" placeholder="90" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#c9a96e;flex-shrink:0"></span>
+            <span data-i18n="m_waist">Cintura</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_waist">Mida no ponto mais estreito do abdômen, geralmente 2-3 cm acima do umbigo. Expire levemente e não prenda a barriga.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-cintura" placeholder="70" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8fad8f;flex-shrink:0"></span>
+            <span data-i18n="m_hip">Quadril</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_hip">Mida na parte mais larga do quadril, passando pelas proeminências ósseas laterais. Fique em pé, pés unidos.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-quadril" placeholder="98" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#b09ea0;flex-shrink:0"></span>
+            <span data-i18n="m_gluteo">Glúteos</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_gluteo">Mida no ponto de maior volume dos glúteos, cerca de 5-8 cm abaixo da medida do quadril. Fique em pé, pés unidos.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-gluteo" placeholder="102" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#8fbccc;flex-shrink:0"></span>
+            <span data-i18n="m_thigh">Coxa</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_thigh">Meça a coxa direita, logo abaixo da dobra glútea, no ponto mais largo. Fique em pé, pernas levemente afastadas.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-coxa" placeholder="58" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#d4878e;flex-shrink:0"></span>
+            <span data-i18n="m_arm">Braço</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_arm">Meça o braço direito relaxado, na parte mais larga do bíceps, entre o ombro e o cotovelo. Braço ao lado do corpo.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-braco" placeholder="30" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+        <div class="measure-item">
+          <div class="mi-label">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9b8fa0;flex-shrink:0"></span>
+            <span data-i18n="m_calf">Panturrilha</span>
+            <div class="tooltip-wrap">
+              <button class="help-btn" onclick="toggleTip(this)" aria-label="Ajuda">?</button>
+              <div class="tooltip-box" data-i18n="tip_calf">Meça a panturrilha direita no ponto mais largo, com a perna relaxada e o pé no chão. Não aperte a fita.</div>
+            </div>
+          </div>
+          <div class="input-row"><input type="number" id="m-panturrilha" placeholder="36" inputmode="decimal" step=".5"/><span class="unit-badge">cm</span></div>
+        </div>
+
+      </div><!-- /measure-fields-col -->
+    </div><!-- /body-diagram-wrap -->
+
+    <div class="input-group" style="margin-bottom:6px">
+      <label class="field-label" data-i18n="lbl_notes">Observações <span style="opacity:.6;font-weight:300">(opcional)</span></label>
+      <div class="input-row" style="border-radius:16px;">
+        <input type="text" id="m-obs" style="font-family:var(--font-b);font-size:.9rem;" data-i18n-ph="notes_ph"/>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="salvarMedidas()" data-i18n="btn_save_measures">Salvar Medidas ✦</button>
+  </div>
+
+  <!-- RCQ card -->
+  <div class="card" id="rcq-card" style="display:none">
+    <h3 class="card-title" style="font-size:1.3rem" data-i18n="rcq_title">Relação <em>Cintura-Quadril</em></h3>
+    <p class="card-sub" data-i18n="rcq_sub">Indicador de saúde cardiovascular</p>
+    <div class="insight-grid" id="rcq-grid"></div>
+    <p style="font-size:.76rem;color:var(--taupe);margin-top:14px;line-height:1.6" data-i18n="rcq_note">Ideal para mulheres: abaixo de 0,80 · Risco elevado: acima de 0,85</p>
+  </div>
+
+  <div class="ad-slot">
+    <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+    <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+  </div>
+</div>
+
+<!-- ══════════ HISTÓRICO ══════════ -->
+<div id="sec-historico" class="section">
+  <div class="card" style="padding:24px 22px">
+    <h2 class="card-title" data-i18n="history_title">Histórico de <em>IMC</em></h2>
+    <p class="card-sub" data-i18n="history_sub">Seus registros salvos</p>
+    <div id="historico-imc-list"></div>
+  </div>
+  <div class="ad-slot">
+    <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+    <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+  </div>
+  <div class="card" style="padding:24px 22px">
+    <h2 class="card-title" data-i18n="history_measures_title">Histórico de <em>Medidas</em></h2>
+    <p class="card-sub" data-i18n="history_measures_sub">Evolução corporal detalhada</p>
+    <div id="historico-medidas-list"></div>
+  </div>
+</div>
+
+<!-- ══════════ PROGRESSO ══════════ -->
+<div id="sec-progresso" class="section">
+  <div class="chart-wrap">
+    <h3 class="chart-title" data-i18n="chart_imc">Evolução do IMC</h3>
+    <p class="chart-sub" data-i18n="chart_imc_sub">Últimos registros</p>
+    <div class="chart-canvas-wrap"><canvas id="chart-imc"></canvas></div>
+  </div>
+  <div class="chart-wrap">
+    <h3 class="chart-title" data-i18n="chart_measures">Evolução das Medidas</h3>
+    <p class="chart-sub" data-i18n="chart_measures_sub">cm ao longo do tempo</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;" id="measure-chart-tabs"></div>
+    <div class="chart-canvas-wrap"><canvas id="chart-medida"></canvas></div>
+  </div>
+  <div class="ad-slot">
+    <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+    <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+  </div>
+  <div class="card">
+    <h2 class="card-title" data-i18n="achiev_title">Suas <em>Conquistas</em></h2>
+    <p class="card-sub" data-i18n="achiev_sub">Continue registrando para desbloquear</p>
+    <div class="achiev-grid" id="achiev-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════ DICAS ══════════ -->
+<div id="sec-dicas" class="section">
+  <div class="article-card">
+    <div class="art-tag" data-i18n="art1_tag">✦ Ciclo & Movimento</div>
+    <h3 class="art-title" data-i18n="art1_title">Por que a mulher responde diferente ao exercício</h3>
+    <div class="art-body" id="art1-body"></div>
+  </div>
+  <div class="ad-slot">
+    <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+    <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+  </div>
+  <div class="article-card">
+    <div class="art-tag" data-i18n="art2_tag">✦ Sono & Hormônios</div>
+    <h3 class="art-title" data-i18n="art2_title">O sono que regula — e o que desequilibra</h3>
+    <div class="art-body" id="art2-body"></div>
+  </div>
+  <div class="article-card">
+    <div class="art-tag" data-i18n="art3_tag">✦ Nutrição Feminina</div>
+    <h3 class="art-title" data-i18n="art3_title">Nutrientes essenciais para cada fase da vida</h3>
+    <div class="art-body" id="art3-body"></div>
+  </div>
+  <div class="ad-slot">
+    <div class="ad-label" data-i18n="ad_label">Publicidade</div>
+    <div class="ad-placeholder">✦ <span data-i18n="ad_ph">Espaço para anúncio</span> ✦</div>
+  </div>
+  <div class="article-card">
+    <div class="art-tag" data-i18n="art4_tag">✦ Tabela IMC</div>
+    <h3 class="art-title" data-i18n="art4_title">Referência de IMC — OMS</h3>
+    <table class="imc-table">
+      <thead><tr>
+        <th data-i18n="th_class">Classificação</th><th>IMC</th><th data-i18n="th_risk">Risco</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="dot-sm" style="background:#7ec8d3"></span><span data-i18n="imc_under">Abaixo do peso</span></td><td>&lt; 18,5</td><td data-i18n="risk_high">Alto</td></tr>
+        <tr><td><span class="dot-sm" style="background:#a8d8a0"></span><span data-i18n="imc_normal">Peso ideal</span></td><td>18,5 – 24,9</td><td data-i18n="risk_low">Baixo</td></tr>
+        <tr><td><span class="dot-sm" style="background:#f0d080"></span><span data-i18n="imc_over">Sobrepeso</span></td><td>25,0 – 29,9</td><td data-i18n="risk_mod">Moderado</td></tr>
+        <tr><td><span class="dot-sm" style="background:#e8a070"></span><span data-i18n="imc_ob1">Obesidade I</span></td><td>30,0 – 34,9</td><td data-i18n="risk_high">Alto</td></tr>
+        <tr><td><span class="dot-sm" style="background:#d06060"></span><span data-i18n="imc_ob2">Obesidade II</span></td><td>35,0 – 39,9</td><td data-i18n="risk_very_high">Muito alto</td></tr>
+        <tr><td><span class="dot-sm" style="background:#9b3030"></span><span data-i18n="imc_ob3">Obesidade III</span></td><td>≥ 40,0</td><td data-i18n="risk_critical">Crítico</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>Florette <span style="color:var(--dusty-rose)">♥</span> <span data-i18n="footer_made">feito com amor para mulheres que se cuidam</span></p>
+  <p style="margin-top:5px" data-i18n="footer_disc">Este app é informativo e não substitui orientação médica.</p>
+</footer>
+
+<!-- PREMIUM MODAL -->
+<div id="premium-modal">
+  <div class="modal-box">
+    <div class="modal-title">Florette <em>Premium</em></div>
+    <p class="modal-sub" data-i18n="modal_sub">Desbloqueie tudo e acompanhe sua evolução completa</p>
+    <ul class="feature-list" id="modal-features"></ul>
+    <div class="price-badge"><span id="modal-price">R$ 9,90</span><small>/mês</small></div>
+    <button class="btn-gold" onclick="ativarPremium()" data-i18n="modal_cta">Quero ser Premium ✦</button>
+    <br/><button class="modal-close" onclick="closeModal()" data-i18n="modal_close">Não agora</button>
+  </div>
+</div>
+
+<!-- INSTALL BANNER -->
+<div id="install-banner">
+  <div class="ib-text">
+    <strong data-i18n="install_title">Adicionar à tela inicial</strong>
+    <span data-i18n="install_sub">Acesse o Florette offline, a qualquer hora!</span>
+  </div>
+  <button class="btn-install" id="btn-install-ok" data-i18n="install_btn">Instalar</button>
+  <button class="btn-dismiss-ib" id="btn-dismiss-ib">×</button>
+</div>
+
+<!-- TOAST -->
+<div id="reminder-toast"><span id="toast-msg"></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+/* ══════════════════════════════════════════════
+   FLORETTE v2 — Full App Logic
+   ══════════════════════════════════════════════ */
+
+/* ── i18n ──────────────────────────────────────────── */
+const LANGS = {
+  pt:{
+    tagline:"Saúde · Medidas · Evolução Feminina",
+    nav_calc:"✦ IMC",nav_measures:"Medidas",nav_history:"Histórico",nav_progress:"Progresso",nav_tips:"Dicas",
+    ad_label:"Publicidade",ad_ph:"Espaço para anúncio",
+    calc_title:'Calcule seu <em>IMC</em>',
+    calc_sub:"Preencha os campos — o resultado é salvo automaticamente",
+    phase_label:"Minha fase de vida",
+    ph_young:"Jovem adulta",ph_pregnant:"Gestante",ph_post:"Pós-menopausa",ph_senior:"60+",
+    lbl_weight:"Peso",lbl_height:"Altura",lbl_age:"Idade",unit_years:"anos",lbl_notes:"Observações",
+    btn_calc:"Calcular & Salvar IMC ✦",
+    g_under:"Abaixo",g_ideal:"Ideal",g_over:"Sobrepeso",g_obese:"Acima",
+    tips_for_you:"dicas para você",
+    measures_title:'Suas <em>Medidas</em>',
+    measures_sub:"Fita métrica bem ajustada, sem apertar",
+    diagram_note:"lado\ndireito",
+    m_bust:"Busto",m_waist:"Cintura",m_hip:"Quadril",m_gluteo:"Glúteos",
+    m_thigh:"Coxa",m_arm:"Braço",m_calf:"Panturrilha",
+    tip_bust:"Passe a fita na linha dos mamilos, horizontalmente. Inspire normalmente ao medir.",
+    tip_waist:"Mida no ponto mais estreito, 2-3 cm acima do umbigo. Expire levemente, sem prender a barriga.",
+    tip_hip:"Mida na parte mais larga do quadril, pelas proeminências ósseas. Fique em pé, pés unidos.",
+    tip_gluteo:"Mida no ponto de maior volume dos glúteos, cerca de 5-8 cm abaixo do quadril. Pés unidos.",
+    tip_thigh:"Meça a coxa direita logo abaixo da dobra glútea, no ponto mais largo. Pernas levemente afastadas.",
+    tip_arm:"Meça o braço direito relaxado, na parte mais larga do bíceps. Braço ao lado do corpo.",
+    tip_calf:"Meça a panturrilha direita no ponto mais largo, pé no chão, perna relaxada.",
+    notes_ph:"Ex: pós-treino, manhã em jejum...",
+    btn_save_measures:"Salvar Medidas ✦",
+    rcq_title:'Relação <em>Cintura-Quadril</em>',rcq_sub:"Indicador de saúde cardiovascular",
+    rcq_note:"Ideal para mulheres: abaixo de 0,80 · Risco elevado: acima de 0,85",
+    history_title:'Histórico de <em>IMC</em>',history_sub:"Seus registros salvos",
+    history_measures_title:'Histórico de <em>Medidas</em>',history_measures_sub:"Evolução corporal detalhada",
+    chart_imc:"Evolução do IMC",chart_imc_sub:"Últimos registros",
+    chart_measures:"Evolução das Medidas",chart_measures_sub:"cm ao longo do tempo",
+    achiev_title:'Suas <em>Conquistas</em>',achiev_sub:"Continue registrando para desbloquear",
+    art1_tag:"✦ Ciclo & Movimento",art1_title:"Por que a mulher responde diferente ao exercício",
+    art2_tag:"✦ Sono & Hormônios",art2_title:"O sono que regula — e o que desequilibra",
+    art3_tag:"✦ Nutrição Feminina",art3_title:"Nutrientes essenciais para cada fase da vida",
+    art4_tag:"✦ Tabela IMC",art4_title:"Referência de IMC — OMS",
+    th_class:"Classificação",th_risk:"Risco",
+    imc_under:"Abaixo do peso",imc_normal:"Peso ideal",imc_over:"Sobrepeso",
+    imc_ob1:"Obesidade I",imc_ob2:"Obesidade II",imc_ob3:"Obesidade III",
+    risk_low:"Baixo",risk_mod:"Moderado",risk_high:"Alto",risk_very_high:"Muito alto",risk_critical:"Crítico",
+    footer_made:"feito com amor para mulheres que se cuidam",
+    footer_disc:"Este app é informativo e não substitui orientação médica.",
+    modal_sub:"Desbloqueie tudo e acompanhe sua evolução completa",
+    modal_cta:"Quero ser Premium ✦",modal_close:"Não agora",modal_price:"R$ 9,90",
+    install_title:"Adicionar à tela inicial",install_sub:"Acesse o Florette offline, a qualquer hora!",install_btn:"Instalar",
+    premium_features:["Histórico ilimitado de IMC","Histórico ilimitado de medidas","Gráficos de evolução completos","Sem anúncios","Conquistas exclusivas","Exportar dados"],
+    lbl_ideal_weight:"Peso ideal",lbl_goal:"Meta",lbl_water:"Água/dia",lbl_category:"Categoria",
+    lbl_rcq:"RCQ",lbl_rcq_status:"Status",
+    toast_imc:"IMC salvo automaticamente 🌸",toast_measures:"Medidas salvas! 💛",
+    empty_imc:"Nenhum registro ainda.\nCalcule seu IMC — ele será salvo automaticamente.",
+    empty_measures:"Nenhuma medida registrada ainda.",
+    unlock_history:"Histórico completo é Premium.\nVeja seus últimos 3 registros grátis.",
+    imc_categories:["Abaixo do peso","Peso saudável ✦","Sobrepeso","Obesidade Grau I","Obesidade Grau II","Obesidade Grau III"],
+    achiev_names:["Primeiro Passo","3 Registros","7 Registros","1 Mês","Medidas","Consistente"],
+    achiev_descs:["1º registro","3 IMCs","7 IMCs","30 dias ativos","Medidas salvas","Mês completo"],
+  },
+  en:{
+    tagline:"Health · Measurements · Female Evolution",
+    nav_calc:"✦ BMI",nav_measures:"Measures",nav_history:"History",nav_progress:"Progress",nav_tips:"Tips",
+    ad_label:"Advertisement",ad_ph:"Ad space",
+    calc_title:'Calculate your <em>BMI</em>',
+    calc_sub:"Fill in the fields — your result is saved automatically",
+    phase_label:"My life stage",
+    ph_young:"Young adult",ph_pregnant:"Pregnant",ph_post:"Post-menopause",ph_senior:"60+",
+    lbl_weight:"Weight",lbl_height:"Height",lbl_age:"Age",unit_years:"years",lbl_notes:"Notes",
+    btn_calc:"Calculate & Save BMI ✦",
+    g_under:"Under",g_ideal:"Ideal",g_over:"Overweight",g_obese:"Obese",
+    tips_for_you:"tips for you",
+    measures_title:'Your <em>Measures</em>',
+    measures_sub:"Use a snug but not tight measuring tape",
+    diagram_note:"right\nside",
+    m_bust:"Bust",m_waist:"Waist",m_hip:"Hips",m_gluteo:"Glutes",
+    m_thigh:"Thigh",m_arm:"Arm",m_calf:"Calf",
+    tip_bust:"Wrap the tape at nipple level, horizontally. Breathe normally when measuring.",
+    tip_waist:"Measure at the narrowest point, 2-3 cm above the navel. Exhale gently, don't suck in.",
+    tip_hip:"Measure at the widest part of the hips, over the hip bones. Stand with feet together.",
+    tip_gluteo:"Measure at the fullest point of the glutes, about 5-8 cm below the hip. Feet together.",
+    tip_thigh:"Measure the right thigh just below the glute fold, at the widest point. Feet slightly apart.",
+    tip_arm:"Measure the right relaxed arm at the widest part of the bicep. Arm at the side.",
+    tip_calf:"Measure the right calf at the widest point, foot on the floor, leg relaxed.",
+    notes_ph:"E.g.: post-workout, fasted morning...",
+    btn_save_measures:"Save Measures ✦",
+    rcq_title:'Waist-Hip <em>Ratio</em>',rcq_sub:"Cardiovascular health indicator",
+    rcq_note:"Ideal for women: below 0.80 · Elevated risk: above 0.85",
+    history_title:'<em>BMI</em> History',history_sub:"Your saved records",
+    history_measures_title:'<em>Measures</em> History',history_measures_sub:"Detailed body evolution",
+    chart_imc:"BMI Evolution",chart_imc_sub:"Last records",
+    chart_measures:"Measures Evolution",chart_measures_sub:"cm over time",
+    achiev_title:'Your <em>Achievements</em>',achiev_sub:"Keep logging to unlock",
+    art1_tag:"✦ Cycle & Movement",art1_title:"Why women respond differently to exercise",
+    art2_tag:"✦ Sleep & Hormones",art2_title:"The sleep that regulates — and the kind that doesn't",
+    art3_tag:"✦ Female Nutrition",art3_title:"Essential nutrients for every life stage",
+    art4_tag:"✦ BMI Table",art4_title:"BMI Reference — WHO",
+    th_class:"Classification",th_risk:"Risk",
+    imc_under:"Underweight",imc_normal:"Healthy weight",imc_over:"Overweight",
+    imc_ob1:"Obesity I",imc_ob2:"Obesity II",imc_ob3:"Obesity III",
+    risk_low:"Low",risk_mod:"Moderate",risk_high:"High",risk_very_high:"Very high",risk_critical:"Critical",
+    footer_made:"made with love for women who care for themselves",
+    footer_disc:"This app is informational and does not replace medical advice.",
+    modal_sub:"Unlock everything and track your full evolution",
+    modal_cta:"Go Premium ✦",modal_close:"Not now",modal_price:"$ 2.99",
+    install_title:"Add to home screen",install_sub:"Access Florette offline, anytime!",install_btn:"Install",
+    premium_features:["Unlimited BMI history","Unlimited measures history","Full evolution charts","Ad-free","Exclusive achievements","Export data"],
+    lbl_ideal_weight:"Ideal weight",lbl_goal:"Goal",lbl_water:"Water/day",lbl_category:"Category",
+    lbl_rcq:"WHR",lbl_rcq_status:"Status",
+    toast_imc:"BMI saved automatically 🌸",toast_measures:"Measures saved! 💛",
+    empty_imc:"No records yet.\nCalculate your BMI — it will be saved automatically.",
+    empty_measures:"No measurements saved yet.",
+    unlock_history:"Full history is Premium.\nSee your last 3 records for free.",
+    imc_categories:["Underweight","Healthy weight ✦","Overweight","Obesity Grade I","Obesity Grade II","Obesity Grade III"],
+    achiev_names:["First Step","3 Records","7 Records","1 Month","Measures","Consistent"],
+    achiev_descs:["1st record","3 BMIs","7 BMIs","30 active days","Measures saved","Full month"],
+  },
+  es:{
+    tagline:"Salud · Medidas · Evolución Femenina",
+    nav_calc:"✦ IMC",nav_measures:"Medidas",nav_history:"Historial",nav_progress:"Progreso",nav_tips:"Consejos",
+    ad_label:"Publicidad",ad_ph:"Espacio para anuncio",
+    calc_title:'Calcula tu <em>IMC</em>',
+    calc_sub:"Completa los campos — el resultado se guarda automáticamente",
+    phase_label:"Mi etapa de vida",
+    ph_young:"Adulta joven",ph_pregnant:"Embarazada",ph_post:"Postmenopausia",ph_senior:"60+",
+    lbl_weight:"Peso",lbl_height:"Altura",lbl_age:"Edad",unit_years:"años",lbl_notes:"Notas",
+    btn_calc:"Calcular & Guardar IMC ✦",
+    g_under:"Bajo",g_ideal:"Ideal",g_over:"Sobrepeso",g_obese:"Obeso",
+    tips_for_you:"consejos para ti",
+    measures_title:'Tus <em>Medidas</em>',
+    measures_sub:"Cinta métrica bien ajustada, sin apretar",
+    diagram_note:"lado\nderecho",
+    m_bust:"Busto",m_waist:"Cintura",m_hip:"Cadera",m_gluteo:"Glúteos",
+    m_thigh:"Muslo",m_arm:"Brazo",m_calf:"Pantorrilla",
+    tip_bust:"Pasa la cinta a la altura de los pezones, horizontalmente. Respira normalmente al medir.",
+    tip_waist:"Mide en el punto más estrecho, 2-3 cm sobre el ombligo. Exhala suavemente, sin contraer.",
+    tip_hip:"Mide en la parte más ancha de la cadera, sobre los huesos. De pie, pies juntos.",
+    tip_gluteo:"Mide en el punto de mayor volumen de los glúteos, unos 5-8 cm bajo la cadera. Pies juntos.",
+    tip_thigh:"Mide el muslo derecho justo bajo el pliegue glúteo, en el punto más ancho. Piernas algo separadas.",
+    tip_arm:"Mide el brazo derecho relajado en la parte más ancha del bíceps. Brazo al lado del cuerpo.",
+    tip_calf:"Mide la pantorrilla derecha en el punto más ancho, pie en el suelo, pierna relajada.",
+    notes_ph:"Ej: post-entreno, mañana en ayunas...",
+    btn_save_measures:"Guardar Medidas ✦",
+    rcq_title:'Relación <em>Cintura-Cadera</em>',rcq_sub:"Indicador de salud cardiovascular",
+    rcq_note:"Ideal para mujeres: menos de 0,80 · Riesgo elevado: más de 0,85",
+    history_title:'Historial de <em>IMC</em>',history_sub:"Tus registros guardados",
+    history_measures_title:'Historial de <em>Medidas</em>',history_measures_sub:"Evolución corporal detallada",
+    chart_imc:"Evolución del IMC",chart_imc_sub:"Últimos registros",
+    chart_measures:"Evolución de Medidas",chart_measures_sub:"cm a lo largo del tiempo",
+    achiev_title:'Tus <em>Logros</em>',achiev_sub:"Sigue registrando para desbloquear",
+    art1_tag:"✦ Ciclo & Movimiento",art1_title:"Por qué la mujer responde diferente al ejercicio",
+    art2_tag:"✦ Sueño & Hormonas",art2_title:"El sueño que regula — y el que desequilibra",
+    art3_tag:"✦ Nutrición Femenina",art3_title:"Nutrientes esenciales para cada etapa de la vida",
+    art4_tag:"✦ Tabla IMC",art4_title:"Referencia IMC — OMS",
+    th_class:"Clasificación",th_risk:"Riesgo",
+    imc_under:"Bajo peso",imc_normal:"Peso saludable",imc_over:"Sobrepeso",
+    imc_ob1:"Obesidad I",imc_ob2:"Obesidad II",imc_ob3:"Obesidad III",
+    risk_low:"Bajo",risk_mod:"Moderado",risk_high:"Alto",risk_very_high:"Muy alto",risk_critical:"Crítico",
+    footer_made:"hecho con amor para mujeres que se cuidan",
+    footer_disc:"Esta app es informativa y no reemplaza la orientación médica.",
+    modal_sub:"Desbloquea todo y sigue tu evolución completa",
+    modal_cta:"Quiero ser Premium ✦",modal_close:"Ahora no",modal_price:"$ 2,99",
+    install_title:"Agregar a pantalla de inicio",install_sub:"¡Accede a Florette sin conexión, en cualquier momento!",install_btn:"Instalar",
+    premium_features:["Historial ilimitado de IMC","Historial ilimitado de medidas","Gráficos de evolución completos","Sin anuncios","Logros exclusivos","Exportar datos"],
+    lbl_ideal_weight:"Peso ideal",lbl_goal:"Meta",lbl_water:"Agua/día",lbl_category:"Categoría",
+    lbl_rcq:"RCC",lbl_rcq_status:"Estado",
+    toast_imc:"¡IMC guardado automáticamente! 🌸",toast_measures:"¡Medidas guardadas! 💛",
+    empty_imc:"Sin registros aún.\nCalcula tu IMC — se guardará automáticamente.",
+    empty_measures:"Sin medidas registradas todavía.",
+    unlock_history:"El historial completo es Premium.\nVe tus últimos 3 registros gratis.",
+    imc_categories:["Bajo peso","Peso saludable ✦","Sobrepeso","Obesidad Grado I","Obesidad Grado II","Obesidad Grado III"],
+    achiev_names:["Primer Paso","3 Registros","7 Registros","1 Mes","Medidas","Constante"],
+    achiev_descs:["1er registro","3 IMCs","7 IMCs","30 días activos","Medidas guardadas","Mes completo"],
+  }
+};
+
+let currentLang = localStorage.getItem('florette_lang') || 'pt';
+let T = LANGS[currentLang];
+let currentPhase = 'young';
+
+function setLang(l){
+  currentLang = l; T = LANGS[l];
+  localStorage.setItem('florette_lang', l);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
+  applyI18n();
+  renderHistoricoIMC(); renderHistoricoMedidas();
+  renderAchievements(); renderArticles();
+}
+
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if(T[k] !== undefined) el.innerHTML = T[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.getAttribute('data-i18n-ph');
+    if(T[k]) el.placeholder = T[k];
+  });
+}
+
+/* ── PHASE ─────────────────────────────────────── */
+function selectPhase(btn){
+  document.querySelectorAll('.phase-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPhase = btn.dataset.phase;
+}
+
+/* ── STATE ─────────────────────────────────────── */
+let isPremium = JSON.parse(localStorage.getItem('florette_premium') || 'false');
+const FREE_LIMIT = 3;
+function getHistoricoIMC(){ return JSON.parse(localStorage.getItem('florette_imc') || '[]'); }
+function setHistoricoIMC(d){ localStorage.setItem('florette_imc', JSON.stringify(d)); }
+function getHistoricoMedidas(){ return JSON.parse(localStorage.getItem('florette_medidas') || '[]'); }
+function setHistoricoMedidas(d){ localStorage.setItem('florette_medidas', JSON.stringify(d)); }
+
+/* ── IMC CATEGORIES ─────────────────────────────── */
+const IMC_CATS = [
+  { max:18.5, colorHex:'#7ec8d3', gaugePos:7,
+    tips:['t_under1','t_under2','t_under3','t_under4'],
+    icons:['🥑','💪','🩺','🌙'] },
+  { max:24.9, colorHex:'#a8d8a0', gaugePos:28,
+    tips:['t_ideal1','t_ideal2','t_ideal3','t_ideal4'],
+    icons:['🎉','🧘','💧','🥗'] },
+  { max:29.9, colorHex:'#f0c060', gaugePos:52,
+    tips:['t_over1','t_over2','t_over3','t_over4'],
+    icons:['🚶','🍽️','💤','📅'] },
+  { max:34.9, colorHex:'#e8a070', gaugePos:68,
+    tips:['t_ob1a','t_ob1b','t_ob1c','t_ob1d'],
+    icons:['🩺','🏊','🧠','📊'] },
+  { max:39.9, colorHex:'#d06060', gaugePos:82,
+    tips:['t_ob2a','t_ob2b','t_ob2c','t_ob2d'],
+    icons:['👩‍⚕️','🤝','🔬','💛'] },
+  { max:Infinity, colorHex:'#9b3030', gaugePos:95,
+    tips:['t_ob3a','t_ob3b','t_ob3c','t_ob3d'],
+    icons:['🏥','👩‍⚕️','💜','📞'] },
+];
+
+const TIPS_TEXT = {
+  pt:{
+    t_under1:'Aumente calorias com nutrição densa: abacate, oleaginosas, azeite e proteínas magras.',
+    t_under2:'Musculação ajuda a ganhar massa muscular de forma saudável e estruturada.',
+    t_under3:'Consulte um médico para descartar causas hormonais ou metabólicas.',
+    t_under4:'Priorize 8h de sono — o hormônio do crescimento age principalmente durante o descanso.',
+    t_ideal1:'Parabéns! Seu IMC está na faixa ideal. Mantenha com alimentação variada e movimento regular.',
+    t_ideal2:'Inclua práticas de bem-estar: meditação, yoga ou caminhadas ao ar livre.',
+    t_ideal3:'Hidratação: 35 ml × seu peso em kg, bem distribuído ao longo do dia.',
+    t_ideal4:'Prato colorido — variedade de vegetais garante micronutrientes essenciais.',
+    t_over1:'30 minutos de caminhada diária é um começo excelente e sustentável.',
+    t_over2:'Reduza ultraprocessados e açúcar refinado. Priorize comida de verdade.',
+    t_over3:'Qualidade do sono: privação aumenta apetite e dificulta o controle do peso.',
+    t_over4:'Pequenas mudanças consistentes superam dietas radicais a longo prazo.',
+    t_ob1a:'Busque acompanhamento médico e nutricional personalizado.',
+    t_ob1b:'Exercícios de baixo impacto (natação, hidroginástica) protegem as articulações.',
+    t_ob1c:'Apoio psicológico é valioso — a relação emocional com comida é central.',
+    t_ob1d:'Monitore pressão, glicemia e colesterol regularmente com seu médico.',
+    t_ob2a:'Procure endocrinologista ou clínica especializada em obesidade.',
+    t_ob2b:'Equipe multidisciplinar (médico + nutricionista + psicólogo) traz melhores resultados.',
+    t_ob2c:'Exames laboratoriais periódicos são essenciais para monitorar riscos.',
+    t_ob2d:'Cuide da saúde emocional. Mudança de hábitos é uma jornada, não uma corrida.',
+    t_ob3a:'Busque especialista imediatamente. Esta faixa requer acompanhamento urgente.',
+    t_ob3b:'Discuta com seu médico todas as opções, incluindo tratamentos clínicos.',
+    t_ob3c:'Você merece cuidado e suporte. Há profissionais prontos para ajudar.',
+    t_ob3d:'Apoio psicológico especializado é parte fundamental do tratamento.',
+  },
+  en:{
+    t_under1:'Increase calories with nutrient-dense foods: avocado, nuts, olive oil and lean proteins.',
+    t_under2:'Strength training helps gain muscle mass in a healthy and structured way.',
+    t_under3:'See a doctor to rule out hormonal or metabolic causes.',
+    t_under4:'Prioritize 8h of sleep — growth hormone acts mainly during rest.',
+    t_ideal1:'Your BMI is ideal! Maintain it with varied nutrition and regular movement.',
+    t_ideal2:'Include wellness practices: meditation, yoga or outdoor walks.',
+    t_ideal3:'Hydration: 35 ml × your weight in kg, spread throughout the day.',
+    t_ideal4:'Colorful plates ensure a variety of essential micronutrients.',
+    t_over1:'30 minutes of daily walking is an excellent and sustainable start.',
+    t_over2:'Reduce ultra-processed foods and refined sugar. Prioritize real food.',
+    t_over3:'Sleep quality: deprivation increases appetite and makes weight control harder.',
+    t_over4:'Small consistent changes beat radical diets in the long run.',
+    t_ob1a:'Seek personalized medical and nutritional support.',
+    t_ob1b:'Low-impact exercises (swimming, water aerobics) protect joints.',
+    t_ob1c:'Psychological support is valuable — emotional relationship with food is central.',
+    t_ob1d:'Monitor blood pressure, glucose and cholesterol regularly.',
+    t_ob2a:'See an endocrinologist or obesity specialist clinic.',
+    t_ob2b:'Multidisciplinary team (doctor + nutritionist + psychologist) brings better results.',
+    t_ob2c:'Regular lab tests are essential to monitor risks.',
+    t_ob2d:'Take care of your emotional health. Habit change is a journey, not a race.',
+    t_ob3a:'See a specialist immediately. This range requires urgent follow-up.',
+    t_ob3b:'Discuss all options with your doctor, including clinical treatments.',
+    t_ob3c:'You deserve care and support. There are professionals ready to help.',
+    t_ob3d:'Specialized psychological support is a key part of treatment.',
+  },
+  es:{
+    t_under1:'Aumenta calorías con alimentos nutritivos: aguacate, nueces, aceite de oliva y proteínas magras.',
+    t_under2:'El entrenamiento de fuerza ayuda a ganar masa muscular de forma saludable.',
+    t_under3:'Consulta a un médico para descartar causas hormonales o metabólicas.',
+    t_under4:'Prioriza 8h de sueño — la hormona del crecimiento actúa principalmente durante el descanso.',
+    t_ideal1:'¡Tu IMC es ideal! Mantenlo con alimentación variada y movimiento regular.',
+    t_ideal2:'Incorpora bienestar: meditación, yoga o caminatas al aire libre.',
+    t_ideal3:'Hidratación: 35 ml × tu peso en kg, bien distribuido durante el día.',
+    t_ideal4:'Plato colorido — la variedad de vegetales garantiza micronutrientes esenciales.',
+    t_over1:'30 minutos de caminata diaria es un comienzo excelente y sostenible.',
+    t_over2:'Reduce ultraprocesados y azúcar refinada. Prioriza comida real.',
+    t_over3:'Calidad del sueño: la privación aumenta el apetito y dificulta el control del peso.',
+    t_over4:'Pequeños cambios consistentes superan las dietas radicales a largo plazo.',
+    t_ob1a:'Busca acompañamiento médico y nutricional personalizado.',
+    t_ob1b:'Ejercicios de bajo impacto (natación, aquagym) protegen las articulaciones.',
+    t_ob1c:'El apoyo psicológico es valioso — la relación emocional con la comida es central.',
+    t_ob1d:'Monitoriza presión, glucemia y colesterol regularmente.',
+    t_ob2a:'Consulta a un endocrinólogo o clínica especializada en obesidad.',
+    t_ob2b:'Equipo multidisciplinar (médico + nutricionista + psicólogo) da mejores resultados.',
+    t_ob2c:'Los análisis periódicos son esenciales para monitorizar riesgos.',
+    t_ob2d:'Cuida tu salud emocional. El cambio de hábitos es un viaje, no una carrera.',
+    t_ob3a:'Busca un especialista de inmediato. Este rango requiere seguimiento urgente.',
+    t_ob3b:'Habla con tu médico sobre todas las opciones, incluidos tratamientos clínicos.',
+    t_ob3c:'Mereces cuidado y apoyo. Hay profesionales listos para ayudarte.',
+    t_ob3d:'El apoyo psicológico especializado es parte fundamental del tratamiento.',
+  }
+};
+
+/* dicas extras por fase */
+const PHASE_TIPS = {
+  pt:{
+    pregnant:['🤰 Durante a gestação o IMC é uma referência limitada. Converse sempre com seu obstetra sobre o ganho de peso ideal para você.','🥦 Atenção redobrada com ácido fólico, ferro e cálcio nesta fase. Alimentação variada e colorida é fundamental.'],
+    post:['🌡️ Na pós-menopausa, a distribuição de gordura muda. Exercícios de força são especialmente importantes para manter massa óssea e muscular.','💊 Vitamina D e cálcio merecem atenção especial. Converse com seu médico sobre suplementação.'],
+    senior:['🦴 Após os 60, preservar massa muscular é prioridade. Proteínas em cada refeição e musculação leve fazem diferença.','🚶 Caminhadas diárias reduzem risco de quedas e mantêm a mobilidade. Comece devagar e aumente gradualmente.'],
+    young:[]
+  },
+  en:{
+    pregnant:["🤰 During pregnancy, BMI is a limited reference. Always talk to your OB about your ideal weight gain.","🥦 Pay extra attention to folic acid, iron and calcium. Varied, colorful nutrition is essential."],
+    post:["🌡️ After menopause, fat distribution changes. Strength training is especially important to maintain bone and muscle mass.","💊 Vitamin D and calcium need special attention. Talk to your doctor about supplementation."],
+    senior:["🦴 After 60, preserving muscle mass is the priority. Protein at every meal and light strength training make a real difference.","🚶 Daily walks reduce fall risk and maintain mobility. Start slowly and progress gradually."],
+    young:[]
+  },
+  es:{
+    pregnant:["🤰 Durante el embarazo, el IMC es una referencia limitada. Habla siempre con tu obstetra sobre el aumento de peso ideal.","🥦 Presta atención al ácido fólico, hierro y calcio. Una alimentación variada y colorida es fundamental."],
+    post:["🌡️ Tras la menopausia, la distribución de grasa cambia. El entrenamiento de fuerza es especialmente importante para mantener la masa ósea y muscular.","💊 La vitamina D y el calcio necesitan atención especial. Consulta a tu médico sobre suplementación."],
+    senior:["🦴 Después de los 60, preservar la masa muscular es prioridad. Proteína en cada comida y ejercicio de fuerza suave marcan la diferencia.","🚶 Las caminatas diarias reducen el riesgo de caídas y mantienen la movilidad. Empieza despacio y progresa gradualmente."],
+    young:[]
+  }
+};
+
+/* ── CALCULAR (auto-save) ───────────────────────── */
+function calcular(){
+  const peso  = parseFloat(document.getElementById('peso').value);
+  const altM  = parseFloat(document.getElementById('altM').value) || 0;
+  const altCm = parseFloat(document.getElementById('altCm').value) || 0;
+  if(!peso || (!altM && !altCm)){ shakeCard(); return; }
+  const alt = altM + altCm/100;
+  if(alt < 1 || alt > 2.5 || peso < 20 || peso > 400){ alert(T.lbl_invalid || 'Verifique os valores.'); return; }
+
+  const imc = peso / (alt*alt);
+  // AUTO-SAVE
+  const hist = getHistoricoIMC();
+  hist.unshift({ imc:parseFloat(imc.toFixed(1)), peso, alt, phase:currentPhase, date:new Date().toISOString() });
+  setHistoricoIMC(hist);
+  checkAchievements();
+  showToast(T.toast_imc);
+
+  renderResult(imc, peso, alt);
+}
+
+function renderResult(imc, peso, alt){
+  const cat    = IMC_CATS.find(c => imc <= c.max);
+  const catIdx = IMC_CATS.indexOf(cat);
+
+  document.getElementById('imc-val').textContent = imc.toFixed(1).replace('.',',');
+  document.getElementById('imc-val').style.color = cat.colorHex;
+  document.getElementById('imc-cat').textContent = T.imc_categories[catIdx];
+  document.getElementById('imc-cat').style.color = cat.colorHex;
+  setTimeout(()=>{ document.getElementById('gauge-thumb').style.left = cat.gaugePos+'%'; }, 80);
+
+  const pesoMin = (18.5*alt*alt).toFixed(1).replace('.',',');
+  const pesoMax = (24.9*alt*alt).toFixed(1).replace('.',',');
+  const dif = peso - 24.9*alt*alt;
+  const difLabel = dif > 0.5
+    ? `−${Math.abs(dif).toFixed(1).replace('.',',')} kg`
+    : dif < -0.5 ? `+${Math.abs(dif).toFixed(1).replace('.',',')} kg` : '✦ OK';
+  const agua = (peso*35/1000).toFixed(1).replace('.',',');
+
+  document.getElementById('insight-grid').innerHTML = `
+    <div class="insight-pill"><div class="lbl">${T.lbl_ideal_weight}</div><div class="val">${pesoMin}–${pesoMax} kg</div></div>
+    <div class="insight-pill"><div class="lbl">${T.lbl_goal}</div><div class="val" style="font-size:1rem;margin-top:4px">${difLabel}</div></div>
+    <div class="insight-pill"><div class="lbl">${T.lbl_water}</div><div class="val">${agua} L</div></div>
+    <div class="insight-pill"><div class="lbl">${T.lbl_category}</div><div class="val" style="color:${cat.colorHex};font-size:.9rem">${T.imc_categories[catIdx]}</div></div>
+  `;
+
+  const tipsLang = TIPS_TEXT[currentLang];
+  let tipItems = cat.tips.map((k,i) =>
+    `<li><span class="tip-icon">${cat.icons[i]}</span><span>${tipsLang[k]}</span></li>`
+  ).join('');
+  // dicas de fase extras
+  const phaseTips = (PHASE_TIPS[currentLang] || PHASE_TIPS.pt)[currentPhase] || [];
+  phaseTips.forEach(t => { tipItems += `<li><span class="tip-icon" style="font-size:.85rem">💡</span><span style="font-style:italic;color:var(--dusty-rose)">${t}</span></li>`; });
+
+  document.getElementById('tips-list').innerHTML = tipItems;
+  document.getElementById('result-card').className = 'card visible';
+  document.getElementById('ad-after-calc').style.display = 'block';
+  setTimeout(()=> document.getElementById('result-card').scrollIntoView({behavior:'smooth',block:'start'}), 150);
+}
+
+/* ── MEDIDAS ────────────────────────────────────── */
+const MEASURE_FIELDS = ['busto','cintura','quadril','gluteo','coxa','braco','panturrilha'];
+const MEASURE_COLORS = {busto:'#d4878e',cintura:'#c9a96e',quadril:'#8fad8f',gluteo:'#c4a0b0',coxa:'#8fbccc',braco:'#b09ea0',panturrilha:'#9b8fa0'};
+
+function mKeys(){ return {
+  busto:T.m_bust, cintura:T.m_waist, quadril:T.m_hip,
+  gluteo:T.m_gluteo, coxa:T.m_thigh, braco:T.m_arm, panturrilha:T.m_calf
+};}
+
+function salvarMedidas(){
+  const vals = {}; let hasAny = false;
+  MEASURE_FIELDS.forEach(f => {
+    const v = parseFloat(document.getElementById('m-'+f).value);
+    if(!isNaN(v) && v > 0){ vals[f] = v; hasAny = true; }
+  });
+  if(!hasAny){ shakeCard(); return; }
+  vals.obs  = document.getElementById('m-obs').value.trim();
+  vals.date = new Date().toISOString();
+  const hist = getHistoricoMedidas();
+  hist.unshift(vals);
+  setHistoricoMedidas(hist);
+  showToast(T.toast_measures);
+  checkAchievements();
+
+  if(vals.cintura && vals.quadril){
+    const rcq = (vals.cintura / vals.quadril).toFixed(2);
+    const sc = rcq < 0.8 ? '#a8d8a0' : rcq < 0.85 ? '#f0c060' : '#d06060';
+    const status = rcq < 0.8 ? '✦ Ideal' : rcq < 0.85 ? '⚠ Atenção' : '⚠ Risco';
+    document.getElementById('rcq-card').style.display = 'block';
+    document.getElementById('rcq-grid').innerHTML = `
+      <div class="insight-pill"><div class="lbl">${T.lbl_rcq}</div><div class="val">${rcq}</div></div>
+      <div class="insight-pill"><div class="lbl">${T.lbl_rcq_status}</div><div class="val" style="color:${sc};font-size:.95rem">${status}</div></div>
+    `;
+  }
+
+  MEASURE_FIELDS.forEach(f => { document.getElementById('m-'+f).value = ''; });
+  document.getElementById('m-obs').value = '';
+}
+
+/* ── TOOLTIP ────────────────────────────────────── */
+function toggleTip(btn){
+  const wrap = btn.closest('.tooltip-wrap');
+  const wasOpen = wrap.classList.contains('open');
+  document.querySelectorAll('.tooltip-wrap.open').forEach(w => w.classList.remove('open'));
+  if(!wasOpen) wrap.classList.add('open');
+}
+document.addEventListener('click', e => {
+  if(!e.target.closest('.tooltip-wrap')) document.querySelectorAll('.tooltip-wrap.open').forEach(w => w.classList.remove('open'));
+});
+
+/* ── HISTÓRICO ─────────────────────────────────── */
+function renderHistoricoIMC(){
+  const hist = getHistoricoIMC();
+  const el = document.getElementById('historico-imc-list');
+  if(!hist.length){
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">🌸</div><p>${T.empty_imc}</p></div>`;
+    return;
+  }
+  const visible = isPremium ? hist : hist.slice(0, FREE_LIMIT);
+  const locked  = isPremium ? [] : hist.slice(FREE_LIMIT);
+  let html = visible.map((r,i) => itemIMC(r,i)).join('');
+  if(locked.length){
+    const blurred = locked.slice(0,2).map((r,i) => itemIMC(r, FREE_LIMIT+i, true)).join('');
+    html += lockedOverlay(blurred);
+  }
+  el.innerHTML = html;
+}
+
+function itemIMC(r, i, blurred=false){
+  const cat    = IMC_CATS.find(c => r.imc <= c.max);
+  const catIdx = IMC_CATS.indexOf(cat);
+  const d = fmtDate(r.date);
+  return `<div class="history-item">
+    <div class="hi-dot" style="background:${cat.colorHex}"></div>
+    <div class="hi-info">
+      <div class="hi-date">${d}</div>
+      <div class="hi-val" style="color:${cat.colorHex}">${r.imc.toFixed(1).replace('.',',')}</div>
+      <div class="hi-cat" style="color:${cat.colorHex}">${T.imc_categories[catIdx]}</div>
+      <div class="hi-meta">${r.peso} kg · ${r.alt.toFixed(2)} m</div>
+    </div>
+    ${!blurred ? `<button class="hi-delete" onclick="deleteIMC(${i})">🗑</button>` : ''}
+  </div>`;
+}
+
+function deleteIMC(i){
+  const h = getHistoricoIMC(); h.splice(i,1); setHistoricoIMC(h);
+  renderHistoricoIMC(); renderCharts();
+}
+
+function renderHistoricoMedidas(){
+  const hist = getHistoricoMedidas();
+  const el = document.getElementById('historico-medidas-list');
+  if(!hist.length){
+    el.innerHTML = `<div class="empty-state"><div class="es-icon">📏</div><p>${T.empty_measures}</p></div>`;
+    return;
+  }
+  const visible = isPremium ? hist : hist.slice(0, FREE_LIMIT);
+  const locked  = isPremium ? [] : hist.slice(FREE_LIMIT);
+  const mk = mKeys();
+  let html = visible.map((r,i) => {
+    const parts = MEASURE_FIELDS.filter(k => r[k]).map(k => `${mk[k]}: <strong>${r[k]}</strong>cm`).join(' · ');
+    return `<div class="history-item">
+      <div class="hi-dot" style="background:var(--dusty-rose)"></div>
+      <div class="hi-info">
+        <div class="hi-date">${fmtDate(r.date)}${r.obs ? ' · '+r.obs : ''}</div>
+        <div class="hi-meta" style="margin-top:5px;line-height:1.7">${parts}</div>
+      </div>
+      <button class="hi-delete" onclick="deleteMedida(${i})">🗑</button>
+    </div>`;
+  }).join('');
+  if(locked.length){
+    html += lockedOverlay(`<div style="height:80px;background:var(--blush);border-radius:18px;margin-bottom:10px"></div>`);
+  }
+  el.innerHTML = html;
+}
+
+function deleteMedida(i){
+  const h = getHistoricoMedidas(); h.splice(i,1); setHistoricoMedidas(h);
+  renderHistoricoMedidas(); renderCharts();
+}
+
+function lockedOverlay(inner){
+  return `<div class="locked-overlay">
+    <div class="locked-blur">${inner}</div>
+    <div class="locked-badge">
+      <div class="lock-icon">🔒</div>
+      <p>${T.unlock_history}</p>
+      <button class="btn-gold" style="padding:10px 20px;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;margin-top:6px;width:auto" onclick="openModal()">${T.modal_cta}</button>
+    </div>
+  </div>`;
+}
+
+function fmtDate(iso){
+  return new Date(iso).toLocaleDateString(
+    currentLang==='en'?'en-US':currentLang==='es'?'es-ES':'pt-BR',
+    {day:'2-digit',month:'short',year:'numeric'}
+  );
+}
+
+/* ── CHARTS ─────────────────────────────────────── */
+let chartIMC=null, chartMedida=null, activeMeasure='cintura';
+
+function renderCharts(){
+  renderChartIMC(); renderChartMedida(activeMeasure); renderMeasureTabs();
+}
+
+function renderChartIMC(){
+  const hist = [...getHistoricoIMC()].reverse();
+  const ctx  = document.getElementById('chart-imc').getContext('2d');
+  if(chartIMC) chartIMC.destroy();
+  if(!hist.length) return;
+  chartIMC = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels: hist.map(r => fmtDate(r.date).replace(/\s\d{4}/,'')),
+      datasets:[{ label:'IMC', data:hist.map(r=>r.imc),
+        borderColor:'#d4878e', backgroundColor:'rgba(212,135,142,.1)',
+        borderWidth:2.5, pointBackgroundColor:'#d4878e', pointRadius:4, tension:.35, fill:true }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#9e8486'}},
+        y:{grid:{color:'rgba(212,135,142,.08)'},ticks:{font:{size:10},color:'#9e8486'}}}}
+  });
+}
+
+function renderChartMedida(key){
+  activeMeasure = key;
+  const hist = [...getHistoricoMedidas()].reverse().filter(r=>r[key]);
+  const ctx  = document.getElementById('chart-medida').getContext('2d');
+  if(chartMedida) chartMedida.destroy();
+  if(!hist.length) return;
+  const col = MEASURE_COLORS[key];
+  const mk  = mKeys();
+  chartMedida = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels: hist.map(r => fmtDate(r.date).replace(/\s\d{4}/,'')),
+      datasets:[{ label:mk[key]||key, data:hist.map(r=>r[key]),
+        borderColor:col, backgroundColor:col+'22',
+        borderWidth:2.5, pointBackgroundColor:col, pointRadius:4, tension:.35, fill:true }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#9e8486'}},
+        y:{grid:{color:'rgba(212,135,142,.08)'},ticks:{font:{size:10},color:'#9e8486'}}}}
+  });
+  document.querySelectorAll('.mtab').forEach(b=>{
+    const active = b.dataset.key===key;
+    b.style.background = active ? col : '';
+    b.style.color = active ? '#fff' : '';
+    b.style.borderColor = active ? col : '';
+  });
+}
+
+function renderMeasureTabs(){
+  const mk = mKeys();
+  document.getElementById('measure-chart-tabs').innerHTML = MEASURE_FIELDS.map(k =>
+    `<button class="tab-btn mtab" style="padding:7px 12px;font-size:.6rem" data-key="${k}" onclick="renderChartMedida('${k}')">${mk[k]}</button>`
+  ).join('');
+  document.querySelectorAll('.mtab').forEach(b=>{
+    if(b.dataset.key===activeMeasure){
+      b.style.background = MEASURE_COLORS[activeMeasure];
+      b.style.color='#fff'; b.style.borderColor=MEASURE_COLORS[activeMeasure];
+    }
+  });
+}
+
+/* ── ACHIEVEMENTS ───────────────────────────────── */
+const ACHIEVS = [
+  (imc,med) => imc.length>=1,
+  (imc,med) => imc.length>=3,
+  (imc,med) => imc.length>=7,
+  (imc,med) => {
+    if(imc.length<2) return false;
+    const d1=new Date(imc[0].date), d2=new Date(imc[imc.length-1].date);
+    return Math.abs(d1-d2)/(1000*60*60*24)>=30;
+  },
+  (imc,med) => med.length>=1,
+  (imc,med) => imc.length>=4 && new Set(imc.map(r=>new Date(r.date).getMonth()+'-'+new Date(r.date).getFullYear())).size>=1,
+];
+const ACHIEV_ICONS = ['🌱','🌸','🌺','🌟','💪','🏆'];
+
+function checkAchievements(){ renderAchievements(); }
+
+function renderAchievements(){
+  const imc=getHistoricoIMC(), med=getHistoricoMedidas();
+  document.getElementById('achiev-grid').innerHTML = ACHIEVS.map((fn,i)=>{
+    const unlocked = fn(imc,med);
+    return `<div class="achiev-card ${unlocked?'':'locked-a'}">
+      <div class="achiev-icon">${ACHIEV_ICONS[i]}</div>
+      <div style="font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);line-height:1.4">${T.achiev_names[i]}</div>
+      <div style="font-size:.58rem;color:var(--taupe);margin-top:3px">${T.achiev_descs[i]}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── PREMIUM MODAL ──────────────────────────────── */
+function openModal(){
+  document.getElementById('modal-features').innerHTML = T.premium_features.map(f=>`<li><span class="fi" style="color:var(--gold)">✦</span> ${f}</li>`).join('');
+  document.getElementById('modal-price').textContent = T.modal_price;
+  document.getElementById('premium-modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('premium-modal').classList.remove('open'); }
+function ativarPremium(){
+  /* Integre aqui Stripe, PagSeguro ou Hotmart. Após confirmação chame confirmarPremium() */
+  alert('Integre seu sistema de pagamento aqui (Hotmart, Stripe, PagSeguro). Após confirmação chame confirmarPremium().');
+}
+function confirmarPremium(){
+  isPremium = true;
+  localStorage.setItem('florette_premium','true');
+  closeModal();
+  renderHistoricoIMC(); renderHistoricoMedidas(); renderCharts();
+  showToast('✨ Premium ativado! Bem-vinda ao Florette Premium ✦');
+}
+
+/* ── ARTICLES ───────────────────────────────────── */
+const ARTICLES = {
+  pt:{
+    art1:`<p>O ciclo hormonal influencia diretamente a performance e a recuperação. Nas fases folicular e ovulatória, o estrogênio aumenta disposição e força — ideal para treinos intensos.</p><p>Na fase lútea, a progesterona favorece atividades mais suaves: pilates, yoga, caminhadas. <strong>Respeitar o ciclo é treinar de forma mais inteligente.</strong></p><p>30 minutos de movimento diário, adaptados ao seu ciclo, produzem resultados visíveis em 3 semanas.</p>`,
+    art2:`<p>Dormir menos de 7 horas eleva o cortisol e a grelina (hormônio da fome), tornando a perda de peso até <strong>55% mais difícil</strong>.</p><p>Uma rotina de sono consistente regula os hormônios em 2 semanas. Evite telas 1 hora antes de dormir. Chás de camomila e lavanda favorecem o relaxamento.</p>`,
+    art3:`<p><strong>Ferro:</strong> Mulheres em idade reprodutiva perdem ferro mensalmente. Feijão, lentilha, carnes magras e folhas escuras são fontes excelentes. Combine com vitamina C para melhor absorção.</p><p><strong>Cálcio + Vitamina D:</strong> Essenciais após os 35 anos. Iogurte grego, brócolis e 15 min de sol diários.</p><p><strong>Ômega-3:</strong> Reduz inflamação e melhora o humor. Sardinha, chia e linhaça são acessíveis e eficazes.</p>`,
+  },
+  en:{
+    art1:`<p>The hormonal cycle directly influences performance and recovery. During follicular and ovulatory phases, estrogen boosts energy and strength — perfect for intense workouts.</p><p>During the luteal phase, progesterone favors lighter activities: pilates, yoga, walks. <strong>Respecting your cycle means training smarter.</strong></p><p>30 minutes of daily movement, adapted to your cycle, produces visible results in 3 weeks.</p>`,
+    art2:`<p>Sleeping less than 7 hours raises cortisol and ghrelin (the hunger hormone), making weight loss up to <strong>55% harder</strong>.</p><p>A consistent sleep routine regulates hormones in 2 weeks. Avoid screens 1 hour before bed. Chamomile and lavender teas promote relaxation.</p>`,
+    art3:`<p><strong>Iron:</strong> Women of reproductive age lose iron monthly. Beans, lentils, lean meats and dark leafy greens are excellent sources. Combine with vitamin C for better absorption.</p><p><strong>Calcium + Vitamin D:</strong> Essential after 35. Greek yogurt, broccoli and 15 min of daily sun.</p><p><strong>Omega-3:</strong> Reduces inflammation and improves mood. Sardines, chia and flaxseed are affordable and effective.</p>`,
+  },
+  es:{
+    art1:`<p>El ciclo hormonal influye directamente en el rendimiento y la recuperación. En las fases folicular y ovulatoria, el estrógeno aumenta la energía y la fuerza — ideal para entrenamientos intensos.</p><p>En la fase lútea, la progesterona favorece actividades más suaves: pilates, yoga, caminatas. <strong>Respetar el ciclo es entrenar de forma más inteligente.</strong></p><p>30 minutos de movimiento diario, adaptados a tu ciclo, producen resultados visibles en 3 semanas.</p>`,
+    art2:`<p>Dormir menos de 7 horas eleva el cortisol y la grelina (hormona del hambre), haciendo que la pérdida de peso sea hasta <strong>55% más difícil</strong>.</p><p>Una rutina de sueño consistente regula las hormonas en 2 semanas. Evita pantallas 1 hora antes de dormir. Los tés de manzanilla y lavanda favorecen la relajación.</p>`,
+    art3:`<p><strong>Hierro:</strong> Las mujeres en edad reproductiva pierden hierro mensualmente. Legumbres, carnes magras y verduras de hoja oscura son excelentes fuentes. Combínalas con vitamina C para mejor absorción.</p><p><strong>Calcio + Vitamina D:</strong> Esenciales después de los 35. Yogur griego, brócoli y 15 min de sol diarios.</p><p><strong>Omega-3:</strong> Reduce la inflamación y mejora el estado de ánimo. Sardinas, chía y linaza son asequibles y eficaces.</p>`,
+  }
+};
+function renderArticles(){
+  ['art1','art2','art3'].forEach(k => {
+    const el = document.getElementById(k+'-body');
+    if(el) el.innerHTML = ARTICLES[currentLang][k];
+  });
+}
+
+/* ── TAB NAVIGATION ─────────────────────────────── */
+function showTab(id, btn){
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn:not(.mtab)').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='historico'){ renderHistoricoIMC(); renderHistoricoMedidas(); }
+  if(id==='progresso'){ renderCharts(); renderAchievements(); }
+}
+
+/* ── SHAKE ──────────────────────────────────────── */
+function shakeCard(){
+  const card = document.querySelector('.section.active .card');
+  if(!card) return;
+  card.style.animation='none'; card.offsetHeight; card.style.animation='shake .4s ease';
+}
+const ss = document.createElement('style');
+ss.textContent=`@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}`;
+document.head.appendChild(ss);
+
+/* ── TOAST ──────────────────────────────────────── */
+function showToast(msg){
+  const t = document.getElementById('reminder-toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 3200);
+}
+
+/* ── PWA ────────────────────────────────────────── */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('install-banner').style.display='flex';
+});
+document.getElementById('btn-install-ok').addEventListener('click', async()=>{
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt(); await deferredPrompt.userChoice;
+  deferredPrompt=null; document.getElementById('install-banner').style.display='none';
+});
+document.getElementById('btn-dismiss-ib').addEventListener('click',()=>{
+  document.getElementById('install-banner').style.display='none';
+});
+document.getElementById('premium-modal').addEventListener('click', e=>{
+  if(e.target===document.getElementById('premium-modal')) closeModal();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Enter') calcular(); });
+
+/* ── INIT ───────────────────────────────────────── */
+applyI18n();
+setLang(currentLang);
+renderArticles();
+
+// lembrete semanal
+const lr = localStorage.getItem('florette_last_reminder');
+const now = Date.now();
+if(!lr || now-parseInt(lr) > 7*24*60*60*1000){
+  setTimeout(()=>{
+    const msgs={pt:'Hora de registrar seu IMC esta semana! 🌸',en:'Time to log your BMI this week! 🌸',es:'¡Hora de registrar tu IMC esta semana! 🌸'};
+    showToast(msgs[currentLang]);
+    localStorage.setItem('florette_last_reminder', now.toString());
+  }, 3500);
+}
+</script>
+</body>
+</html>
